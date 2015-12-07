@@ -24,12 +24,17 @@
 import fileinput
 
 nice = 0
+forbidden = ['ab', 'cd', 'pq', 'xy']
 
 for line in fileinput.input("input5"):
 
     # Children who curse are naughty
-    if ('ab' or 'cd' or 'pq' or 'xy') in line:
-        continue
+    # if ('ab' or 'cd' or 'pq' or 'xy') in line:
+    
+    n_curse = 0
+    for bad in forbidden:
+        if bad in line:
+            n_curse += 1
 
     n_vowel = 0
     n_rep = 0
@@ -45,7 +50,7 @@ for line in fileinput.input("input5"):
         # Update Last Char to the actual one for next interation  
         last_char = char
 
-    if n_vowel >= 3 and n_rep >= 1:
+    if n_vowel >= 3 and n_rep >= 1 and n_curse < 1:
         nice += 1
 
     # else:
