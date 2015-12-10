@@ -41,7 +41,7 @@ pretty_lights = np.zeros((1000, 1000), dtype=bool)
 # Pretty function to analyse the order we have been given and extract the important data!
 def analOrder(order):
     # We create a list with all the data that is relevant to us using Regular Expressions
-    [action, x0, y0, x1, y1] = re.search('(\w+) (\d+),(\d+) through (\d+),(\d+)', order).groups()
+    [action, x0, y0, x1, y1] = re.search(r'(\w+) (\d+),(\d+) through (\d+),(\d+)', order).groups()
 
     x0 = int(x0)
     x1 = int(x1) + 1
