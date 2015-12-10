@@ -22,41 +22,49 @@
 # repeating letter with one between (odo), but no pair that appears twice. How
 # many strings are nice under these new rules?
 
+import string
 import fileinput
 
+
+def nicey(evil_kid, pair):
+    n_pair_kid = 0
+    now = 1
+
+    while now < len(evil_kid):
+        if (evil_kid[now-1] + evil_kid[now]) == pair:
+            n_pair_kid += 1
+
+        if  now < (len(evil_kid)-1) and evil_kid[now-1] == evil_kid[now] and evil_kid[now] == evil_kid[now+1]:
+            now += 1
+        now += 1
+    return n_pair_kid > 1
+            
+
+
+myList = []
+# We create all the possible pairs in the alphabet
+for i in string.ascii_lowercase:
+    for j in string.ascii_lowercase:
+        pair = i + j
+        # In other languages, instead of append it normally is push
+        myList.append(pair)
+
+
+santa_log = fileinput.input('input5')
 nice = 0
-forbidden = ['ab', 'cd', 'pq', 'xy']
 
-for line in fileinput.input("input5"):
+for line in santa_log:
+    n_pair = False
+    for pair in myList:
+        if nicey(line,pair):
+            n_pair = True
+            break
 
-    # Children who curse are naughty
-    # if ('ab' or 'cd' or 'pq' or 'xy') in line:
-    
-    n_curse = 0
-    for bad in forbidden:
-        if bad in line:
-            n_curse += 1
+    n_rep = False
+    if len( [x for x in zip(line[:-2], line[2:]) if x[0] == x[1]] ) > 0:
+        n_rep = True
 
-    n_vowel = 0
-    n_rep = 0
-    last_char = ''
-
-    for char in line:
-        # Children who don't use enough vowels are naughty
-        if char in 'aeiou':
-            n_vowel += 1
-        # Children who don't repeat letters are naughty
-        if last_char == char:
-            n_rep += 1
-        # Update Last Char to the actual one for next interation  
-        last_char = char
-
-    if n_vowel >= 3 and n_rep >= 1 and n_curse < 1:
+    if n_pair and n_rep:
         nice += 1
 
-    # else:
-        # print line
-        # print 'n_vowel {} and n_rep {}\n'.format(n_vowel, n_rep)
-
-
-print "There are {} nice children this year".format(nice)
+print 'There are {} nice kids'.format(nice)
